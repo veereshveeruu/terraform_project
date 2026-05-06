@@ -34,7 +34,7 @@ jobs:
       run: terraform init
 
     - name: Terraform Plan
-      run: terraform plan -var-file="terraform.tfvars" -out=tfplan
+      run: terraform plan -lock=false -var-file="terraform.tfvars" -out=tfplan
 
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
