@@ -1,3 +1,7 @@
+variable "public_key" {
+  type = string
+}
+
 provider "aws" {
   region = var.region
 }
@@ -24,6 +28,7 @@ module "ec2" {
   subnet_ids        = module.vpc.public_subnets
   security_group_id = module.sg.security_group_id
   instance_type     = var.instance_type
+  public_key        = var.public_key
   project           = var.project
 }
 module "s3" {
