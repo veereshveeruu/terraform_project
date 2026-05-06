@@ -1,6 +1,6 @@
 resource "aws_security_group" "web_sg" {
   name        = "${var.project}-sg"
-  description = "Allow HTTP inbound, all outbound"
+  description = "Allow HTTP and SSH inbound, all outbound"
   vpc_id      = var.vpc_id
 
   ingress {
@@ -9,6 +9,15 @@ resource "aws_security_group" "web_sg" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = var.allowed_cidrs
+  }
+
+  # 🔥 ADD THIS BLOCK
+  ingress {
+    description = "SSH access"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
