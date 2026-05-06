@@ -42,7 +42,8 @@ jobs:
     - name: Get EC2 Public IPs
       id: tf_outputs
       run: |
-          echo "IPS=$(terraform output -json ec2publicips | jq -r '.[]')" >> $GITHUB_ENV
+          IPS=$(terraform output -json ec2_public_ips | jq -r '.[]')
+          echo "IPS=$IPS" >> $GITHUB_ENV
 
     - name: Check Nginx & Docker versions
       run: |
