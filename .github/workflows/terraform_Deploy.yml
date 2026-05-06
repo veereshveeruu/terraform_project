@@ -29,6 +29,10 @@ jobs:
     - name: Generate SSH key
       run: |
         ssh-keygen -t rsa -b 2048 -f key.pem -N ""
+    - name: Setup SSH key
+      run: |
+       echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
+       chmod 600 key.pem
 
     - name: Terraform Init
       run: terraform init -reconfigure
