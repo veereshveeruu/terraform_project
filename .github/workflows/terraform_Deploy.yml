@@ -26,9 +26,6 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
-    - name: Generate SSH key
-      run: |
-        ssh-keygen -t rsa -b 2048 -f key.pem -N ""
     - name: Setup SSH key
       run: |
        echo "${{ secrets.SSH_PRIVATE_KEY }}" > key.pem
@@ -43,19 +40,7 @@ jobs:
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
 
-    - name: Get EC2 Public IPs
-      run: |
-         echo "Getting EC2 IPs..."
-
-         for ip in $(terraform output -json ec2_public_ips | jq -r '.[]'); do
-         echo "Checking instance: $ip"
-
-         ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@$ip "nginx -v 2>&1"
-         ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@$ip "docker --version"
-
-         echo "----------------------"
-         done
-
+  
     - name: Upload file to S3
       run: |
         echo "Hello from pipeline" > test.txt
