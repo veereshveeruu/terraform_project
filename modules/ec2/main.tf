@@ -7,6 +7,11 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+resource "aws_key_pair" "deployer" {
+  key_name   = "github-actions-key"
+  public_key = var.public_key
+}
+
 resource "aws_instance" "web" {
   count                  = 2
   ami                    = data.aws_ami.ubuntu.id
